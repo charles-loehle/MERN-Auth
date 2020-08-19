@@ -20,6 +20,7 @@ const Activate = ({ match }) => {
     if (token) {
       setValues({ ...values, name, token });
     }
+    // eslint-disable-next-line
   }, []);
 
   const { name, token, show } = values;

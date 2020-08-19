@@ -26,6 +26,7 @@ const Signup = () => {
     setValues({ ...values, buttonText: 'Submitting' });
     axios({
       method: 'POST',
+      // http://localhost:8000/api/signup
       url: `${process.env.REACT_APP_API}/signup`,
       data: { name, email, password },
     })
@@ -53,6 +54,7 @@ const Signup = () => {
         <label className="text-muted">Name</label>
         <input
           onChange={handleChange}
+          name="name"
           value={name}
           type="text"
           className="form-control"
@@ -63,6 +65,7 @@ const Signup = () => {
         <label className="text-muted">Email</label>
         <input
           onChange={handleChange}
+          name="email"
           value={email}
           type="email"
           className="form-control"
@@ -73,6 +76,7 @@ const Signup = () => {
         <label className="text-muted">Password</label>
         <input
           onChange={handleChange}
+          name="password"
           value={password}
           type="password"
           className="form-control"
