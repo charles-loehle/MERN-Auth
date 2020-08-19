@@ -5,33 +5,6 @@ const expressJwt = require('express-jwt');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// exports.signup = (req, res) => {
-//     // console.log('REQ BODY ON SIGNUP', req.body);
-//     const { name, email, password } = req.body;
-
-//     User.findOne({ email }).exec((err, user) => {
-//         if (user) {
-//             return res.status(400).json({
-//                 error: 'Email is taken'
-//             });
-//         }
-//     });
-
-//     let newUser = new User({ name, email, password });
-
-//     newUser.save((err, success) => {
-//         if (err) {
-//             console.log('SIGNUP ERROR', err);
-//             return res.status(400).json({
-//                 error: err
-//             });
-//         }
-//         res.json({
-//             message: 'Signup success! Please signin'
-//         });
-//     });
-// };
-
 exports.signup = (req, res) => {
   const { name, email, password } = req.body;
 
@@ -144,6 +117,7 @@ exports.signin = (req, res) => {
   });
 };
 
+// middleware for routes/user.js to check for valid token by the JWT_SECRET and automatically adds the user property to to the request as req.user
 exports.requireSignin = expressJwt({
-  secret: process.env.JWT_SECRET, // req.user
+  secret: process.env.JWT_SECRET,
 });

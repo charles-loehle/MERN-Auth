@@ -48,7 +48,8 @@ const Signin = ({ history }) => {
         toast.error(error.response.data.error);
       });
   };
-  const signinForm = () => (
+
+  const signinForm = (
     <form>
       <div className="form-group">
         <label className="text-muted">Email</label>
@@ -75,13 +76,14 @@ const Signin = ({ history }) => {
       </div>
     </form>
   );
+
   return (
     <Layout>
       <div className="col-md-6 offset-md-3">
         <ToastContainer />
         {isAuth() ? <Redirect to="/" /> : null}
         <h1 className="p-5 text-center">Signin</h1>
-        {signinForm()}
+        {signinForm}
       </div>
     </Layout>
   );
