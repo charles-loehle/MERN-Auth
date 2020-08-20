@@ -19,7 +19,7 @@ exports.read = (req, res) => {
 };
 
 // @route PUT http://localhost:8000/api/user/update
-// @desc Update a user's name by id from req.user.id. Cannot update user's email because auth is based on email
+// @desc Update a user's name by id from req.user.id , not req.params.id. Cannot update user's email because auth is based on email
 // @access Private
 exports.update = (req, res) => {
   // console.log('UPDATE USER - req.user', req.user, 'UPDATE DATA', req.body);

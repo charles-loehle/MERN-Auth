@@ -121,3 +121,23 @@ exports.signin = (req, res) => {
 exports.requireSignin = expressJwt({
   secret: process.env.JWT_SECRET,
 });
+
+// only admin can update user
+exports.adminMiddleware = (req, res, next) => {
+  User.findById({ _id: req.user._id }).exec((err, user) => {
+    if (err || !user) {
+      return res.status(404).json({
+        error: 'User not found',
+      });
+    }
+
+    if (user.role !== 'admin') {
+      return res.status(401).json({
+        error: 'Access denied',
+      });
+    }
+
+    req.profile = user;
+    next();
+  });
+};
