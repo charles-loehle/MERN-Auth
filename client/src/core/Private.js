@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import Layout from '../core/Layout';
 import axios from 'axios';
-import { isAuth } from '../auth/helpers';
+import { getCookie, isAuth, signout } from '../auth/helpers';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-const Private = () => {
+const Private = ({ history }) => {
   const [values, setValues] = useState({
     role: '',
     name: '',
@@ -14,6 +13,39 @@ const Private = () => {
     password: '',
     buttonText: 'Submit',
   });
+
+  useEffect(() => {
+    loadProfile();
+    // eslint-disable-next-line
+  }, []);
+
+  const token = getCookie('token');
+
+  // pre-populate user profile
+  const loadProfile = () => {
+    axios({
+      method: 'GET',
+      // http://localhost:8000/api/user
+      url: `${process.env.REACT_APP_API}/user/${isAuth()._id}`,
+      // secure the request with a token
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        console.log('PRIVATE PROFILE UPDATE', response);
+        const { role, name, email } = response.data;
+        setValues({ ...values, role, name, email });
+      })
+      .catch((error) => {
+        console.log('PRIVATE PROFILE UPDATE ERROR', error.response.data.error);
+        if (error.response.status === 401) {
+          signout(() => {
+            history.push('/');
+          });
+        }
+      });
+  };
 
   const { role, name, email, password, buttonText } = values;
 
@@ -54,7 +86,7 @@ const Private = () => {
       <div className="form-group">
         <label className="text-muted">Role</label>
         <input
-          onChange={handleChange}
+          disabled
           name="name"
           value={role}
           type="text"
@@ -76,6 +108,7 @@ const Private = () => {
       <div className="form-group">
         <label className="text-muted">Email</label>
         <input
+          disabled
           name="email"
           value={email}
           type="email"
