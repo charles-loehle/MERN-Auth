@@ -23,7 +23,7 @@ const Activate = ({ match }) => {
     // eslint-disable-next-line
   }, []);
 
-  const { name, token, show } = values;
+  const { name, token } = values;
 
   const clickSubmit = (event) => {
     event.preventDefault();
