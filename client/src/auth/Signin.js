@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Layout from '../core/Layout';
 import axios from 'axios';
 import { authenticate, isAuth } from './helpers';
@@ -12,11 +12,14 @@ const Signin = ({ history }) => {
     password: '',
     buttonText: 'Submit',
   });
+
   const { email, password, buttonText } = values;
-  const handleChange = (name) => (event) => {
+
+  const handleChange = (event) => {
     // console.log(event.target.value);
-    setValues({ ...values, [name]: event.target.value });
+    setValues({ ...values, [event.target.name]: event.target.value });
   };
+
   const clickSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, buttonText: 'Submitting' });
@@ -54,7 +57,8 @@ const Signin = ({ history }) => {
       <div className="form-group">
         <label className="text-muted">Email</label>
         <input
-          onChange={handleChange('email')}
+          onChange={handleChange}
+          name="email"
           value={email}
           type="email"
           className="form-control"
@@ -63,7 +67,8 @@ const Signin = ({ history }) => {
       <div className="form-group">
         <label className="text-muted">Password</label>
         <input
-          onChange={handleChange('password')}
+          onChange={handleChange}
+          name="password"
           value={password}
           type="password"
           className="form-control"
@@ -84,6 +89,13 @@ const Signin = ({ history }) => {
         {isAuth() ? <Redirect to="/" /> : null}
         <h1 className="p-5 text-center">Signin</h1>
         {signinForm}
+        <br />
+        <Link
+          to="/auth/password/forgot"
+          className="btn btn-sm btn-outline-danger"
+        >
+          Forgot Password
+        </Link>
       </div>
     </Layout>
   );
